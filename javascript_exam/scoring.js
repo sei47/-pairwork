@@ -7,28 +7,31 @@ $(document).ready(function () {
     Number($('#english').val()),
     Number($('#mathematics').val()),
     Number($('#science').val()),
-    Number($('#society').val())
-    ];
-    // 変数「sum」に「国語、英語、数学、理科、社会」の点数を足します。
-    let sum = subject_points[0];
-    sum = sum + subject_points[1];
-    sum = sum + subject_points[2];
-    sum = sum + subject_points[3];
-    sum = sum + subject_points[4];
-    // 「合計点：」(id="sum_indicate")に変数「sum」(合計点)を出力させます。
+    Number($('#society').val())]
+    return subject_points
+};
+
+  // console.log(score_indicate());
+  function average(){
+    let subject_point = score_indicate()
+    let sum = subject_point[0];
+    sum = sum + subject_point[1];
+    sum = sum + subject_point[2];
+    sum = sum + subject_point[3];
+    sum = sum + subject_point[4];
     $("#sum_indicate").text(sum);
 
-    // 「平均点：」に各教科の平均点を出力する処理を記述する。
-    let average = sum / subject_points.length
+    let average = sum / subject_point.length
     $('#average_indicate').text(average);
+    return average
     // ヒント：変数「average」に平均値を出して代入しましょう(平均をとりたい数の合計点数(sum) / 全体の個数)
     // ヒント：全体の個数はlengthメソッドを使って求めます。(lengthメソッド: 文字列の長さや配列の要素数などを取得するメソッド)
-  };
-  // 平均点数を取得し、取得した平均点数から「A、B、C、D」にランク分けするロジックを記述する。
+  }
+  // // 平均点数を取得し、取得した平均点数から「A、B、C、D」にランク分けするロジックを記述する。
   function get_achievement() {
     // 変数「averageIndicate」に
     // 平均点数をHTML上のid="average_indicate"から取得して代入します。
-    let averageIndicate = $("#average_indicate").text();
+    let averageIndicate = average();
     console.log(averageIndicate)
     // もし「averageIndicate」が80以上なら"A"を返します。
     if (averageIndicate >= 80) {
@@ -46,12 +49,7 @@ $(document).ready(function () {
   };
   // 各教科の点数を取得し、取得した点数から「合格、不合格」の判断を下すロジックを作ります。
   function get_pass_or_failure() {
-    let subject_points = [Number($('#national_language').val()),
-    Number($('#english').val()),
-    Number($('#mathematics').val()),
-    Number($('#science').val()),
-    Number($('#society').val())
-    ];
+    let subject_points = score_indicate()
     // 変数「number」に入力した教科の数を代入します。
     let number = subject_points.length;
     // 変数「judge」に"合格"を代入しておきます。
@@ -76,7 +74,7 @@ $(document).ready(function () {
   };
   // [国語の点数,英語の点数,数学の点数,理科の点数,社会の点数]のいずれかの点数が変更された際に「function score_indicate()」を発火させる処理です。
   $('#national_language, #english, #mathematics, #science, #society').change(function () {
-    score_indicate();
+    average();
   });
   // 「ランク」(id="evaluation")ボタンを押したら「get_achievement()」が出力される処理です。
   $('#btn-evaluation').click(function () {
@@ -90,7 +88,7 @@ $(document).ready(function () {
   // ２回目以降に「最終ジャッジ」ボタンを押した際は、それまでに表示していたジャッジのHTML要素を削除して、新たなジャッジのHTML要素を追加する。
   // ヒント：removeメソッドについて調べてみましょう。
   $('#btn-declaration').click(function () {
-    $('#declaration').empty();debugger
+    $('#declaration').empty();
     $('#declaration').text(judgement());
   });
 });
